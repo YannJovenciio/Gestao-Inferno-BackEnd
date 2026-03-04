@@ -1,4 +1,3 @@
-
 namespace Inferno.src.Core.Application.Analytics;
 
 public interface IDemonRecomendationsUseCase

@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Inferno.src.Core.Domain.Entities.ManyToMany;
+using Inferno.src.Core.Domain.Enums;
 
 namespace Inferno.src.Core.Domain.Entities;
 
@@ -8,7 +9,7 @@ public class Soul
     public Guid IdSoul { get; set; }
     public string SoulName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public HellEnum Level { get; set; } = HellEnum.Inferior;
+    public HellLevel Level { get; set; } = HellLevel.Inferior;
 
     // Foreign Key
     public Guid? CavernId { get; set; }

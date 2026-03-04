@@ -1,6 +1,8 @@
 using System.ComponentModel;
 
-public enum HellEnum
+namespace Inferno.src.Core.Domain.Enums;
+
+public enum HellLevel
 {
     [Description("Inferior")]
     Inferior = 1,
