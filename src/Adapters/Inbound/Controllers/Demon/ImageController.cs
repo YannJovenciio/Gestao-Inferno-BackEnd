@@ -1,4 +1,3 @@
-using Inferno.src.Adapters.api.Inbound.model;
 using Inferno.src.Adapters.Outbound.Persistence;
 using Inferno.src.Core.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +11,7 @@ public class ImageController(HellDbContext context) : ControllerBase
 {
     private readonly HellDbContext _context = context;
 
+    [RequestSizeLimit(5 * 1024 * 1024)]
     [HttpPost("upload")]
     public async Task<IActionResult> UploadImage(IFormFile file)
     {

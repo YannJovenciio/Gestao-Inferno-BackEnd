@@ -27,9 +27,7 @@ namespace Inferno.src.Configuration.Demon
                 .IsRequired()
                 .HasColumnName(nameof(Entity.Demon.CategoryId));
 
-            builder
-                .Property(d => d.ImageId)
-                .IsRequired(false);
+            builder.Property(d => d.ImageId).IsRequired(false);
 
             builder
                 .HasOne(d => d.Image)

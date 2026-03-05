@@ -63,7 +63,7 @@ public class SoulRepository : ISoulRepository
             .Souls.Include(s => s.Realizes)
             .Include(s => s.Cavern)
             .Include(s => s.Persecutions)
-            .ThenInclude(p => p.Demon)
+                .ThenInclude(p => p.Demon)
             .ToListAsync();
         return souls;
     }

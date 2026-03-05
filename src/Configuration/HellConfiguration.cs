@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Entity = Inferno.src.Core.Domain.Entities;
 
-namespace Inferno.src.Configuration.Hell
+namespace Inferno.src.Configuration
 {
     public class HellConfiguration : IEntityTypeConfiguration<Entity.Hell>
     {

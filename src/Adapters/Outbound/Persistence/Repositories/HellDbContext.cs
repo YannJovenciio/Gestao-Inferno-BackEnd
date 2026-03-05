@@ -17,6 +17,7 @@ public class HellDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<Persecution> Persecution { get; set; }
     public DbSet<OutBoxEvent> OutBoxEvent { get; set; }
+    public DbSet<Image> Image { get; set; }
     public string DbPath { get; }
 
     public HellDbContext(DbContextOptions<HellDbContext> options)

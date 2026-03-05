@@ -1,6 +1,7 @@
 using Inferno.src.Adapters.Inbound.Controllers.Model;
 using Inferno.src.Core.Application.DTOs.Request.Soul;
 using Inferno.src.Core.Application.DTOs.Response.Soul;
+using Inferno.src.Core.Domain.Enums;
 using Inferno.src.Core.Domain.Interfaces.UseCases.Soul;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +32,7 @@ public class SoulController : ControllerBase
         var (response, message) = await _soulUseCase.CreateSoul(input);
         return CreatedAtAction(
             nameof(Create),
-            new { id = response.IdSoul },
+            new { id = response!.IdSoul },
             new APIResponse<SoulResponse>(response, message)
         );
     }
@@ -39,14 +40,14 @@ public class SoulController : ControllerBase
     [HttpPost("bulk")]
     public async Task<IActionResult> CreateMany([FromBody] List<SoulInput> inputs)
     {
-        _logger.LogInformation($"received request to create {inputs?.Count ?? 0} souls");
+        _logger.LogInformation("received request to create {Count} souls", inputs?.Count ?? 0);
         if (inputs == null || inputs.Count == 0)
         {
             return BadRequest(new APIResponse<List<SoulResponse>>("invalid inputs provided"));
         }
 
         var (response, message) = await _soulUseCase.CreateManySoulsAsync(inputs);
-        _logger.LogInformation($"successfully created {response.Count} souls");
+        _logger.LogInformation("successfully created {Count} souls", response!.Count);
         return Ok(new APIResponse<List<SoulResponse>>(response, message));
     }
 
@@ -55,14 +56,14 @@ public class SoulController : ControllerBase
     {
         _logger.LogInformation("received request to get all Souls");
         var (response, message) = await _soulUseCase.GetAllSoulsAsync();
-        _logger.LogInformation($"successfully retrieved {response.Count} souls");
+        _logger.LogInformation("successfully retrieved {Count} souls", response!.Count);
         return Ok(new APIResponse<List<SoulResponse>>(response, message));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
-        _logger.LogInformation($"received request to get Soul with id:{id}");
+        _logger.LogInformation("received request to get Soul with id:{Id}", id);
         if (id == Guid.Empty)
         {
             return BadRequest(new APIResponse<SoulResponse>("invalid id provided"));
@@ -71,11 +72,11 @@ public class SoulController : ControllerBase
         var (response, message) = await _soulUseCase.GetSoulByIdAsync(id);
         if (response == null)
         {
-            _logger.LogWarning($"soul with id:{id} not found");
+            _logger.LogWarning("soul with id:{Id} not found", id);
             return NotFound(new APIResponse<SoulResponse>("Soul not found"));
         }
 
-        _logger.LogInformation($"successfully found soul with id:{id}");
+        _logger.LogInformation("successfully found soul with id:{Id}", id);
         return Ok(new APIResponse<SoulResponse>(response, message));
     }
 
@@ -83,17 +84,20 @@ public class SoulController : ControllerBase
     public async Task<IActionResult> GetAllWithFilters(
         [FromQuery] Guid? cavernId,
         [FromQuery] string? description,
-        [FromQuery] HellEnum? level
+        [FromQuery] HellLevel? level
     )
     {
         _logger.LogInformation(
-            $"received request to filter souls with cavernId:{cavernId}, level:{level}, description:{description}"
+            "received request to filter souls with:{CavernId},{Level},{Description}",
+            cavernId,
+            level,
+            description
         );
         var (response, message) = await _soulUseCase.GetAllSoulsWithFilters(
             cavernId,
             level,
             description
         );
-        return Ok(new APIResponse<List<SoulResponse>>(response, message));
+        return Ok(new APIResponse<List<SoulResponse>>(response!, message));
     }
 }

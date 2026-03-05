@@ -1,4 +1,5 @@
 using Inferno.src.Adapters.Inbound.Controllers.Model;
+using Inferno.src.Adapters.Models;
 using Inferno.src.Core.Application.DTOs;
 using Inferno.src.Core.Application.DTOs.Request.Demon;
 using Inferno.src.Core.Domain.Interfaces.UseCases.Demon;
@@ -34,7 +35,7 @@ public class DemonController : ControllerBase
 
         return CreatedAtAction(
             nameof(CreateDemon),
-            new { id = response.IdDemon },
+            new { id = response!.IdDemon },
             new APIResponse<DemonResponse>(response, message)
         );
     }
@@ -42,7 +43,7 @@ public class DemonController : ControllerBase
     [HttpPost("CreateMany")]
     public async Task<IActionResult> CreateMany([FromBody] List<DemonInput> inputs)
     {
-        _logger.LogInformation($"receveid request to create {inputs.Count} demons");
+        _logger.LogInformation("receveid request to create {InputsCount} demons", inputs.Count);
         if (inputs == null || inputs.Count == 0)
         {
             return BadRequest(
@@ -51,7 +52,7 @@ public class DemonController : ControllerBase
         }
 
         var (responses, message) = await _demonUseCase.CreateManyAsync(inputs);
-        _logger.LogInformation($"sucessfuly created {responses.Count} demons");
+        _logger.LogInformation($"sucessfuly created {responses!.Count} demons");
         return CreatedAtAction(
             nameof(CreateMany),
             new { id = responses },
@@ -74,7 +75,7 @@ public class DemonController : ControllerBase
         if (response == null)
         {
             _logger.LogWarning($"demon with id:{id} not found");
-            return NotFound(new APIResponse<DemonResponse>(response, message));
+            return NotFound(new APIResponse<DemonResponse>(response!, message));
         }
 
         _logger.LogInformation($"sucessfuly found demon with id:{id}");
@@ -86,7 +87,7 @@ public class DemonController : ControllerBase
     {
         _logger.LogInformation($"receveid request to get all demons");
         var (response, message) = await _demonUseCase.GetAllAsync(pageSize, pageNumber);
-        _logger.LogInformation($"successfully found {response.Count} demons");
+        _logger.LogInformation($"successfully found {response!.Count} demons");
         return Ok(new APIResponse<List<DemonResponse>>(response, message));
     }
 
@@ -98,14 +99,17 @@ public class DemonController : ControllerBase
     )
     {
         _logger.LogInformation(
-            $"receveid request do GetAllWithFilters with queries:{name ?? null},{categoryId ?? null},{createdAt ?? null}"
+            "receveid request do GetAllWithFilters with queries:{Name},{CategoryId},{CreatedAt}",
+            name!,
+            categoryId!,
+            createdAt
         );
         var (responses, message) = await _demonUseCase.GetAllWithFiltersAsync(
             categoryId ?? null,
             name ?? null,
             createdAt ?? null
         );
-        return Ok(new APIResponse<List<DemonResponse>>(responses, message));
+        return Ok(new APIResponse<List<DemonResponse>>(responses!, message));
     }
 
     [HttpGet("OrderedByCategory")]

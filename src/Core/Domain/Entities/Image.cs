@@ -7,6 +7,7 @@ public class Image
     public string ContentType { get; private set; } = string.Empty;
     public byte[] ImageData { get; private set; }
     public DateTime UploadDate { get; private set; }
+
     protected Image() { }
 
     public Image(string fileName, string contentType, byte[] imageData)

@@ -507,6 +507,58 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Image",
+      "item": [
+        {
+          "name": "Upload Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/image/upload",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "image", "upload"]
+            },
+            "description": "Upload de imagem via multipart/form-data. Campo: file"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Image By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/image/{{imageId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "image", "{{imageId}}"]
+            },
+            "description": "Retorna a imagem pelo id"
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "variable": [
