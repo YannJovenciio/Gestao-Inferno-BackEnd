@@ -1,49 +1,30 @@
-using Inferno.src.Core.Domain.Interfaces;
+using Inferno.src.Adapters.Inbound.Controllers.Analytics.Demon;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories.Demon;
 
-namespace Inferno.src.Core.Application.Analytics;
+namespace Inferno.src.Core.Application.Analytics.Demon;
 
-public class DemonRecomendationsUseCase : IDemonRecomendationsUseCase
+public class DemonRecomendationsUseCase(
+    ILogger<DemonRecomendationsUseCase> logger,
+    IDemonRecommendationQuery RecommendationQuery
+) : IDemonRecomendationsUseCase
 {
-    private readonly IDemonRepository _demonRepository;
-    private readonly ILogger<DemonRecomendationsUseCase> _logger;
+    private readonly ILogger<DemonRecomendationsUseCase> _logger = logger;
+    private readonly IDemonRecommendationQuery _recommendationQuery = RecommendationQuery;
 
-    public DemonRecomendationsUseCase(
-        IDemonRepository demonRepository,
-        ILogger<DemonRecomendationsUseCase> logger
+    public async Task<(DemonRecommendationsResponse response, string message)> GetRecomendations(
+        int? pageSize,
+        int? pageNumber
     )
     {
-        _demonRepository = demonRepository;
-        _logger = logger;
-    }
+        var recommendations = await _recommendationQuery.GetRecommendations(
+            pageSize: pageSize,
+            pageNumber: pageNumber
+        );
 
-    public async Task<(List<DemonRecommendations> responses, string message)> GetRecomendations()
-    {
-        var demons = await _demonRepository.GetDemonswithPersecution();
+        _logger.LogInformation($"Succesfull retrivied {recommendations.Count} recommendations");
 
-        List<DemonRecommendations> recommendations = new List<DemonRecommendations>();
+        var response = new DemonRecommendationsResponse(recommendations, recommendations.Count);
 
-        foreach (var demon in demons)
-        {
-            var soulCount = demon.Persecutions.GroupBy(p => p.Soul).Count();
-            var persecutionCount = demon.Persecutions.Count();
-
-            var torturedSouls = demon
-                .Persecutions.GroupBy(d => d.Soul)
-                .OrderByDescending(d => d.Count())
-                .FirstOrDefault();
-            string mostTorturedSoul = torturedSouls == null ? "N/A" : torturedSouls.Key.SoulName;
-            var recomendation = new DemonRecommendations(
-                demon.IdDemon,
-                demon.DemonName,
-                string.IsNullOrEmpty(demon.Category?.CategoryName)
-                    ? "Unknown"
-                    : demon.Category.CategoryName,
-                persecutionCount,
-                mostTorturedSoul,
-                soulCount
-            );
-            recommendations.Add(recomendation);
-        }
-        return (recommendations, $"Succesfull retrivied {recommendations.Count} recommendations");
+        return (response, $"Succesfull retrivied recommendations");
     }
 }

@@ -9,5 +9,12 @@ namespace Inferno.src.Core.Domain.Entities
         public virtual ICollection<Soul> Souls { get; set; } = new List<Soul>();
 
         public Cavern() { }
+
+        public Cavern(string? cavernName, string? location, int capacity)
+        {
+            CavernName = cavernName;
+            Location = location;
+            Capacity = capacity;
+        }
     }
 }

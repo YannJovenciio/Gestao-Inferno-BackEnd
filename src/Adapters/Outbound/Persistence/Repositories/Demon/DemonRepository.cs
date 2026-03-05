@@ -20,7 +20,6 @@ public class DemonRepository : IDemonRepository
 
     public async Task<Demon> CreateAsync(Demon input)
     {
-        Console.WriteLine("Creating demon in repository com IDCATEGORY", input.CategoryId);
         await _context.Demons.AddAsync(input);
         await _context.SaveChangesAsync();
         return input;
@@ -69,13 +68,21 @@ public class DemonRepository : IDemonRepository
         return await query.ToListAsync();
     }
 
-    public Task<List<Demon>> GetDemonswithPersecution()
+    public async Task<(List<Demon> demons, int totalItems)> GetRecomendations(
+        int? pageSize,
+        int? pageNumber
+    )
     {
-        var demons = _context
+        var demons = await _context
             .Demons.Include(d => d.Persecutions)
                 .ThenInclude(p => p.Soul)
             .Include(x => x.Category)
+            .Skip(((pageNumber ?? 1) - 1) * (pageSize ?? 10))
+            .Take(pageSize ?? 10)
+            .OrderBy(d => d.DemonName)
             .ToListAsync();
-        return demons;
+        var totalItems = await _context.Demons.CountAsync();
+
+        return (demons, totalItems);
     }
 }

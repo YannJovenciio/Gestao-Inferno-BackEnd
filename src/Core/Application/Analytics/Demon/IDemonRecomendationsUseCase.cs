@@ -1,7 +1,11 @@
+using Inferno.src.Adapters.Inbound.Controllers.Analytics.Demon;
 
-namespace Inferno.src.Core.Application.Analytics;
+namespace Inferno.src.Core.Application.Analytics.Demon;
 
 public interface IDemonRecomendationsUseCase
 {
-    Task<(List<DemonRecommendations> responses, string message)> GetRecomendations();
+    Task<(DemonRecommendationsResponse response, string message)> GetRecomendations(
+        int? pageSize,
+        int? pageNumber
+    );
 }

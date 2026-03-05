@@ -120,7 +120,13 @@ namespace Inferno.src.Core.Application.UseCases.Soul
             var souls = await _context.GetAllWithFilterAsync(cavernId, level, description);
 
             var responses = souls
-                .Select(s => new SoulResponse(s.IdSoul, s.CavernId, s.SoulName, s.Description, s.Level))
+                .Select(s => new SoulResponse(
+                    s.IdSoul,
+                    s.CavernId,
+                    s.SoulName,
+                    s.Description,
+                    s.Level
+                ))
                 .ToList();
 
             _logger.LogInformation($"successfully  found {responses.Count} souls for this filter");
@@ -129,6 +135,5 @@ namespace Inferno.src.Core.Application.UseCases.Soul
 
             return (responses, $"Successfully found {responses.Count} souls for this filter");
         }
-
     }
 }

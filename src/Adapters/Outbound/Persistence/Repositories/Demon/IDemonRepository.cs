@@ -15,6 +15,9 @@ namespace Inferno.src.Core.Domain.Interfaces
             string? name,
             DateTime? createdAt
         );
-        Task<List<Demon>> GetDemonswithPersecution();
+        Task<(List<Demon> demons, int totalItems)> GetRecomendations(
+            int? pageSize,
+            int? pageNumber
+        );
     }
 }

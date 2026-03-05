@@ -1,3 +1,4 @@
+namespace Inferno.src.Adapters.Inbound.Controllers.Analytics.Demon;
 
 public record DemonRecommendations(
     Guid IdDemon,
@@ -6,4 +7,9 @@ public record DemonRecommendations(
     int PersecutionCount,
     string MostTorturedSoulName,
     int SoulCount
+);
+
+public record DemonRecommendationsResponse(
+    List<DemonRecommendations> Recommendations,
+    int TotalItems
 );

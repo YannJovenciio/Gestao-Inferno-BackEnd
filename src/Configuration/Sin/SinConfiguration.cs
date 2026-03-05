@@ -12,7 +12,11 @@ namespace Inferno.src.Configuration.Sin
             builder.Property(s => s.SinName).IsRequired();
             builder.Property(s => s.SinSeverity).IsRequired();
             builder.Property(s => s.IdSoul).IsRequired(false);
-            builder.HasOne(s => s.Soul).WithMany(so => so.Sins).HasForeignKey(s => s.IdSoul).OnDelete(DeleteBehavior.SetNull);
+            builder
+                .HasOne(s => s.Soul)
+                .WithMany(so => so.Sins)
+                .HasForeignKey(s => s.IdSoul)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

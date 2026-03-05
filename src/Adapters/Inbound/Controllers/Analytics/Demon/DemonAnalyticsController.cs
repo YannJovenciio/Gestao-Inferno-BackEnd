@@ -1,5 +1,6 @@
+using Inferno.src.Adapters.Inbound.Controllers.Analytics.Demon;
 using Inferno.src.Adapters.Inbound.Controllers.Model;
-using Inferno.src.Core.Application.Analytics;
+using Inferno.src.Core.Application.Analytics.Demon;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inferno.src.Adapters.Inbound.Controllers.Analytics;
@@ -20,9 +21,15 @@ public class DemonAnalyticsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetDemonsAnalytics()
+    public async Task<IActionResult> GetDemonsAnalytics(
+        [FromQuery] int? pageSize,
+        [FromQuery] int? pageNumber
+    )
     {
-        var (response, message) = await _demonRecomendations.GetRecomendations();
-        return Ok(new APIResponse<List<DemonRecommendations>>(response, message));
+        var (response, message) = await _demonRecomendations.GetRecomendations(
+            pageSize,
+            pageNumber
+        );
+        return Ok(new APIResponse<DemonRecommendationsResponse>(response, message));
     }
 }

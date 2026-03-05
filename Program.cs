@@ -1,13 +1,16 @@
 using System.Text.Json.Serialization;
 using Inferno.src.Adapters.Models.ErrorHandlerMiddleware;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Category;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories.Cavern;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories.Demon;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Persecution;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Sin;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Soul;
 using Inferno.src.Adapters.Outbound.Workers;
-using Inferno.src.Core.Application.Analytics;
+using Inferno.src.Core.Application.Analytics.Demon;
 using Inferno.src.Core.Application.Analytics.Soul;
 using Inferno.src.Core.Application.UseCases.Category;
+using Inferno.src.Core.Application.UseCases.Cavern;
 using Inferno.src.Core.Application.UseCases.Demon;
 using Inferno.src.Core.Application.UseCases.GetSinsBySeverity;
 using Inferno.src.Core.Application.UseCases.Services;
@@ -60,6 +63,8 @@ builder.Services.AddScoped<ISoulRepository, SoulRepository>();
 builder.Services.AddScoped<IPersecutionRepository, PersecutionRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISinRepository, SinRepository>();
+builder.Services.AddScoped<ICavernRepository, CavernRepository>();
+builder.Services.AddScoped<IDemonRecommendationQuery, DemonRecommendationQuery>();
 
 //UseCases
 builder.Services.AddScoped<IPersecutionUseCase, PersecutionUseCase>();
@@ -70,6 +75,7 @@ builder.Services.AddScoped<ISinUseCase, SinUseCase>();
 builder.Services.AddScoped<IGetSinsBySeverity, GetSinsBySeverity>();
 builder.Services.AddScoped<IDemonRecomendationsUseCase, DemonRecomendationsUseCase>();
 builder.Services.AddScoped<ISoulRecommendations, SoulRecommendations>();
+builder.Services.AddScoped<ICavernUseCase, CavernUseCase>();
 
 //Services
 builder.Services.AddScoped<IEventPublisher, OutBoxEventPublisher>();
