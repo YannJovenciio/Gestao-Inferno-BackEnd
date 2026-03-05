@@ -1,5 +1,6 @@
 using Inferno.src.Core.Application.DTOs.Request.Soul;
 using Inferno.src.Core.Application.DTOs.Response.Soul;
+using Inferno.src.Core.Domain.Enums;
 
 namespace Inferno.src.Core.Domain.Interfaces.UseCases.Soul
 {
@@ -13,7 +14,7 @@ namespace Inferno.src.Core.Domain.Interfaces.UseCases.Soul
         Task<(SoulResponse? response, string message)> CreateSoul(SoulInput request);
         Task<(List<SoulResponse>? responses, string message)> GetAllSoulsWithFilters(
             Guid? cavernId,
-            HellEnum? level,
+            HellLevel? level,
             string? description
         );
     }

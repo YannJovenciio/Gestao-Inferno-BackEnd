@@ -1,5 +1,6 @@
 using Inferno.src.Core.Application.DTOs.Request.Soul;
 using Inferno.src.Core.Application.DTOs.Response.Soul;
+using Inferno.src.Core.Domain.Enums;
 using Inferno.src.Core.Domain.Interfaces.Repository.Souls;
 using Inferno.src.Core.Domain.Interfaces.UseCases.Soul;
 using Entity = Inferno.src.Core.Domain.Entities;
@@ -28,7 +29,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
                 .Select(s => new Entity.Soul(s.Name, s.Description, s.CavernId))
                 .ToList();
 
-            _logger.LogInformation($"Creating {soulsToCreate.Count} souls");
+            _logger.LogInformation("Creating {SoulsToCreateCount} souls", soulsToCreate.Count);
 
             await _context.CreateManyAsync(soulsToCreate);
             var response = soulsToCreate
@@ -41,14 +42,14 @@ namespace Inferno.src.Core.Application.UseCases.Soul
                 ))
                 .ToList();
 
-            _logger.LogInformation($"Successfully created {response.Count} souls");
+            _logger.LogInformation("Successfully created {ResponseCount} souls", response.Count);
             return (response, "Souls created successfully");
         }
 
         public async Task<(List<SoulResponse>? response, string message)> GetAllSoulsAsync()
         {
             var souls = await _context.GetAllAsync();
-            _logger.LogInformation($"Found: {souls}");
+            _logger.LogInformation("Found: {Souls}", souls.Count);
             if (souls == null || souls.Count == 0)
                 return ([], "No souls found");
 
@@ -61,7 +62,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
                     s.Level
                 ))
                 .ToList();
-            _logger.LogInformation($"Successfully found {response.Count} souls");
+            _logger.LogInformation("Successfully found {ResponseCount} souls", response.Count);
             return (response, "Souls found successfully");
         }
 
@@ -70,11 +71,11 @@ namespace Inferno.src.Core.Application.UseCases.Soul
             if (id == Guid.Empty)
                 return (null, "Invalid GUID received");
 
-            _logger.LogInformation($"Fetching soul with id: {id}");
+            _logger.LogInformation("Fetching soul with id: {Id}", id);
 
             var soul = await _context.GetByIdAsync(id);
 
-            _logger.LogInformation($"Successfully found soul with id {id}");
+            _logger.LogInformation("Successfully found soul with id {Id}", id);
             return (
                 new SoulResponse(
                     soul.IdSoul,
@@ -93,9 +94,13 @@ namespace Inferno.src.Core.Application.UseCases.Soul
             if (request == null)
                 return (null, "Invalid input received");
 
-            Entity.Soul soul = new Entity.Soul(request.Name, request.Description, request.CavernId);
+            Entity.Soul soul = new Entity.Soul(
+                request.Name,
+                request.Description!,
+                request.CavernId
+            );
             await _context.CreateAsync(soul);
-            _logger.LogInformation($"Created successfully soul with id: {soul.IdSoul}");
+            _logger.LogInformation("Created successfully soul with id:{SoulId}", soul.IdSoul);
             return (
                 new SoulResponse(
                     soul.IdSoul,
@@ -110,12 +115,15 @@ namespace Inferno.src.Core.Application.UseCases.Soul
 
         public async Task<(List<SoulResponse>? responses, string message)> GetAllSoulsWithFilters(
             Guid? cavernId,
-            HellEnum? level,
+            HellLevel? level,
             string? description
         )
         {
             _logger.LogInformation(
-                $"receveid request to get all souls with filters:{cavernId ?? null},{level ?? null},{description ?? ""}"
+                "receveid request to get all souls with filters:{cavernId},{level},{description}",
+                cavernId ?? null,
+                level ?? null,
+                description ?? ""
             );
             var souls = await _context.GetAllWithFilterAsync(cavernId, level, description);
 
@@ -129,7 +137,10 @@ namespace Inferno.src.Core.Application.UseCases.Soul
                 ))
                 .ToList();
 
-            _logger.LogInformation($"successfully  found {responses.Count} souls for this filter");
+            _logger.LogInformation(
+                "successfully found {SoulCount} souls for this filter",
+                responses.Count
+            );
             if (responses.Count == 0)
                 return (null, "No souls found for this filter");
 

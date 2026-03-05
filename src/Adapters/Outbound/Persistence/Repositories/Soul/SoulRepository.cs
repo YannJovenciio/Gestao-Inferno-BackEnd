@@ -1,3 +1,4 @@
+using Inferno.src.Core.Domain.Enums;
 using Inferno.src.Core.Domain.Interfaces.Repository.Souls;
 using Microsoft.EntityFrameworkCore;
 using Entity = Inferno.src.Core.Domain.Entities;
@@ -35,13 +36,12 @@ public class SoulRepository : ISoulRepository
 
     public async Task<Entity.Soul> GetByIdAsync(Guid id)
     {
-        var soul = await _context.Souls.AsNoTracking().FirstOrDefaultAsync(s => s.IdSoul == id);
-        return soul;
+        return await _context.Souls.AsNoTracking().FirstOrDefaultAsync(s => s.IdSoul == id);
     }
 
     public async Task<List<Entity.Soul>> GetAllWithFilterAsync(
         Guid? cavernId,
-        HellEnum? level,
+        HellLevel? level,
         string? description
     )
     {
@@ -63,7 +63,7 @@ public class SoulRepository : ISoulRepository
             .Souls.Include(s => s.Realizes)
             .Include(s => s.Cavern)
             .Include(s => s.Persecutions)
-                .ThenInclude(p => p.Demon)
+            .ThenInclude(p => p.Demon)
             .ToListAsync();
         return souls;
     }

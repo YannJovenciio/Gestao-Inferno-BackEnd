@@ -3,6 +3,7 @@ using System;
 using Inferno.src.Adapters.Outbound.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inferno.Migrations
 {
     [DbContext(typeof(HellDbContext))]
-    partial class HellDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260207214007_CreatingTable")]
+    partial class CreatingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -76,9 +79,6 @@ namespace Inferno.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("DemonName");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT")
                         .HasColumnName("UpdatedAt");
@@ -86,8 +86,6 @@ namespace Inferno.Migrations
                     b.HasKey("IdDemon");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Demon", (string)null);
                 });
@@ -111,32 +109,6 @@ namespace Inferno.Migrations
                     b.HasKey("IdHell");
 
                     b.ToTable("Hell");
-                });
-
-            modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Image", b =>
-                {
-                    b.Property<int>("IdImage")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<byte[]>("ImageData")
-                        .IsRequired()
-                        .HasColumnType("BLOB");
-
-                    b.Property<DateTime>("UploadDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("IdImage");
-
-                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.ManyToMany.Persecution", b =>
@@ -264,14 +236,7 @@ namespace Inferno.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Inferno.src.Core.Domain.Entities.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Category");
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.ManyToMany.Persecution", b =>

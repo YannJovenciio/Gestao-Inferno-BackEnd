@@ -1,4 +1,5 @@
 using Inferno.src.Core.Domain.Entities;
+using Inferno.src.Core.Domain.Enums;
 
 namespace Inferno.src.Core.Domain.Interfaces.Repository.Souls
 {
@@ -10,7 +11,7 @@ namespace Inferno.src.Core.Domain.Interfaces.Repository.Souls
         Task<Soul> CreateAsync(Soul soul);
         Task<List<Soul>> GetAllWithFilterAsync(
             Guid? cavernId,
-            HellEnum? level,
+            HellLevel? level,
             string? description
         );
         Task<List<Soul>> GetAllWithSins();
