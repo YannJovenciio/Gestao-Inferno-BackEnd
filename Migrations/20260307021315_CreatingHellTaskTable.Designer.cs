@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inferno.Migrations
 {
     [DbContext(typeof(HellDbContext))]
-    [Migration("20260123020352_AddOutBoxEvents")]
-    partial class AddOutBoxEvents
+    [Migration("20260307021315_CreatingHellTaskTable")]
+    partial class CreatingHellTaskTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace Inferno.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CavernName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -76,6 +79,9 @@ namespace Inferno.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("DemonName");
 
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT")
                         .HasColumnName("UpdatedAt");
@@ -83,6 +89,8 @@ namespace Inferno.Migrations
                     b.HasKey("IdDemon");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Demon", (string)null);
                 });
@@ -97,15 +105,78 @@ namespace Inferno.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("HellName")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Nivel")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("IdHell");
 
                     b.ToTable("Hell");
+                });
+
+            modelBuilder.Entity("Inferno.src.Core.Domain.Entities.HellTask", b =>
+                {
+                    b.Property<Guid>("HellTaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeadLine")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("DemonId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("HellTaskId");
+
+                    b.HasIndex("DemonId");
+
+                    b.ToTable("HellTasks");
+                });
+
+            modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Image", b =>
+                {
+                    b.Property<int>("IdImage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("IdImage");
+
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.ManyToMany.Persecution", b =>
@@ -160,7 +231,7 @@ namespace Inferno.Migrations
                     b.Property<string>("Error")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("ProcessedAt")
+                    b.Property<DateTime?>("ProcessedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Type")
@@ -213,7 +284,7 @@ namespace Inferno.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("SoulName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
@@ -233,7 +304,25 @@ namespace Inferno.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Inferno.src.Core.Domain.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Category");
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Inferno.src.Core.Domain.Entities.HellTask", b =>
+                {
+                    b.HasOne("Inferno.src.Core.Domain.Entities.Demon", "Demon")
+                        .WithMany("HellTasks")
+                        .HasForeignKey("DemonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Demon");
                 });
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.ManyToMany.Persecution", b =>
@@ -305,6 +394,8 @@ namespace Inferno.Migrations
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Demon", b =>
                 {
+                    b.Navigation("HellTasks");
+
                     b.Navigation("Persecutions");
                 });
 

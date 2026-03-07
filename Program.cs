@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Inferno.src.Adapters.Models.ErrorHandlerMiddleware;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Category;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Cavern;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Demon;
@@ -86,7 +87,7 @@ builder.Services.AddScoped<IEventHandler<SinCreatedEvent>, SinCreatedHandler>();
 builder.Services.AddHostedService<OutboxDispatcherService>();
 
 //DbContext
-builder.Services.AddDbContext<Inferno.src.Adapters.Outbound.Persistence.HellDbContext>();
+builder.Services.AddDbContext<HellDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -128,7 +129,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var context =
-        scope.ServiceProvider.GetRequiredService<Inferno.src.Adapters.Outbound.Persistence.HellDbContext>();
+        scope.ServiceProvider.GetRequiredService<HellDbContext>();
     Console.WriteLine($"Database path: {context.DbPath}");
 }
 

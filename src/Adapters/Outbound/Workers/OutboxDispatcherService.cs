@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Inferno.src.Adapters.Outbound.Persistence;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories;
 using Inferno.src.Core.Application.UseCases.Services;
 using Inferno.src.Core.Domain.Event;
 

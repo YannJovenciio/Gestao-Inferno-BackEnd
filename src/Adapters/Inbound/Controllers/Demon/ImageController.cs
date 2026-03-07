@@ -1,4 +1,4 @@
-using Inferno.src.Adapters.Outbound.Persistence;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories;
 using Inferno.src.Core.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +22,7 @@ public class ImageController(HellDbContext context) : ControllerBase
         await file.CopyToAsync(memoryStream);
 
         var imageEntity = new Image(file.FileName, file.ContentType, memoryStream.ToArray());
+        memoryStream.Close();
 
         await _context.Image.AddAsync(imageEntity);
         await _context.SaveChangesAsync();
