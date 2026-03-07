@@ -3,7 +3,7 @@ using Inferno.src.Core.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inferno.src.Adapters.api.Inbound.Controllers;
+namespace Inferno.src.Adapters.Inbound.Controllers.Demon;
 
 [ApiController]
 [Route("api/[Controller]")]

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\Inferno.csproj": {}
+    "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\Inferno.csproj": {}
   },
   "projects": {
-    "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\Inferno.csproj": {
+    "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\Inferno.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\Inferno.csproj",
+        "projectUniqueName": "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\Inferno.csproj",
         "projectName": "Inferno",
-        "projectPath": "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\Inferno.csproj",
-        "packagesPath": "C:\\Users\\YanJo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\obj\\",
+        "projectPath": "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\Inferno.csproj",
+        "packagesPath": "C:\\Users\\yjovencio\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\YanJo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\yjovencio\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
