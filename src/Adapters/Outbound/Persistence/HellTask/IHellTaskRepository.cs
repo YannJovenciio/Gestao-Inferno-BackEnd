@@ -10,10 +10,5 @@ public interface IHellTaskRepository
         CancellationToken cancellationToken
     );
     Task DeleteAsync(Guid id, CancellationToken cancellationToken);
-    Task<List<Entity.HellTask>> GetAllByIdAsync(
-        int? pageSize,
-        int? pageNumber,
-        Guid id,
-        CancellationToken cancellationToken
-    );
+    Task<List<Entity.HellTask>> GetAllByIdAsync(Guid id, CancellationToken cancellationToken);
 }
